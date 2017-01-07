@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example - Bind JSON Data to HTML Table using AngularJS ng-repeat</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+
+    <style>
+        table, th, td {
+            border:solid 1px #CCC;
+            padding:1px 3px;
+            font:15px Verdana;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <div ng-app="myApp" ng-controller="myController">
+        <table>
+            <tr>
+                <th>ID</th>
+                    <th>Employee Name</th>
+                        <th>Date of Joining</th>
+                            <th>Age</th>
+            </tr>
+            <tr ng-repeat="emps in empArray | orderBy : 'values.id'">
+
+                <td>{{emps.values.id}}</td>
+                    <td>{{emps.values.name}}</td>
+                        <td>{{emps.joinDate | date}}</td>
+                            <td>{{emps.values.age}}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
+<script>
+    angular.module("myApp", [])
+        .controller('myController', ['$scope', function ($scope) {
+
+            // CREATE AN 'employees' OBJECT, WITH AN ARRAY OF DATA.
+            $scope.employees = {
+                "05/17/2015": { 'id': '001', 'name': 'Alpha', 'age': 37 },
+                "03/25/2016": { 'id': '002', 'name': 'Bravo', 'age': 27 },
+                "09/11/2015": { 'id': '003', 'name': 'Charlie', 'age': 29 },
+                "01/07/2016": { 'id': '004', 'name': 'Delta', 'age': 19 },
+                "03/09/2014": { 'id': '005', 'name': 'Echo', 'age': 32 }
+            }
+
+            $scope.empArray = Object.keys($scope.employees)
+                .map(function (value, index) {
+                    return { joinDate: new Date(value), values: $scope.employees[value] }
+                }
+            );
+        } ]);
+</script>
+</html>
